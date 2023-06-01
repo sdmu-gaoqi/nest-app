@@ -39,3 +39,7 @@ local.strategy.ts 进行守卫验证逻辑
 login 方法使用 this.jwtService.sign(payload)返回 JWT token
 
 jwt.strategy 撰写验证策略 通过 headers 中的 Token 与守卫进行 验证信息
+
+使用了 swagger 撰写文档
+useGlobalInterceptors 处理全局请求返回信息
+useGlobalPipes 处理入参校验
