@@ -29,7 +29,6 @@ export class NewsController {
   @ApiOperation({ summary: '获取新闻信息' })
   @ApiParam({ name: 'id', description: '新闻id', required: true, example: '1' })
   getNewDetail(@Param('id') id: string) {
-    throw new NotDataException();
     return this.newsServie.getNewDetail(id);
   }
 
