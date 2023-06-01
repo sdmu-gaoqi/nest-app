@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class NewsService {
@@ -20,6 +20,14 @@ export class NewsService {
   addNew(data) {
     const newData = { ...data, id: this.newsList.length + 1 };
     this.newsList.push(newData);
+    return newData;
+  }
+
+  getNewDetail(id) {
+    const newData = this.newsList.find((item) => item.id === Number(id));
+    if (!newData) {
+      throw new BadRequestException('新闻不存在');
+    }
     return newData;
   }
 }
