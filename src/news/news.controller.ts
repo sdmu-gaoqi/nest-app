@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -11,6 +12,8 @@ import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { NewsService } from './news.service';
 import { AddNewDto } from './dto/addNew.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateNewDto } from './dto/updateNew.dto';
+import { NotDataException } from 'src/config/exception';
 
 @Controller('news')
 @ApiTags('news')
@@ -26,7 +29,15 @@ export class NewsController {
   @ApiOperation({ summary: '获取新闻信息' })
   @ApiParam({ name: 'id', description: '新闻id', required: true, example: '1' })
   getNewDetail(@Param('id') id: string) {
+    throw new NotDataException();
     return this.newsServie.getNewDetail(id);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: '更新新闻内容' })
+  @ApiParam({ name: 'id', description: '新闻id', required: true, example: '1' })
+  updateNew(@Param('id') id: string, @Body() body: UpdateNewDto) {
+    return this.newsServie.updateNew(id, body.content);
   }
 
   @Post('add')

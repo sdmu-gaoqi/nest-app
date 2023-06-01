@@ -5,15 +5,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('nest-app Api')
-    .setDescription('For the Admin and Shop')
-    .setVersion('1.0.2-alpha')
+    .setDescription('初次尝试搭建的nest仓库')
+    .setVersion('1.0.0-alpha')
     .addTag('auth', '用户模块')
     .addTag('news', '信息模块')
     .addBearerAuth()
