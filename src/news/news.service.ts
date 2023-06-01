@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { NotDataException } from 'src/config/exception';
+import { HttpStatus } from 'src/config/interceptors';
 
 @Injectable()
 export class NewsService {
@@ -27,7 +28,10 @@ export class NewsService {
   getNewDetail(id) {
     const newData = this.newsList.find((item) => item.id === Number(id));
     if (!newData) {
-      throw new BadRequestException();
+      return {
+        code: HttpStatus.NOTDATA,
+        message: 'not Data',
+      };
     }
     return newData;
   }
