@@ -18,6 +18,8 @@ export class NewsService {
     return this.newsList;
   }
   addNew(data) {
-    this.newsList.push({ ...data, id: this.newsList.length + 1 });
+    const newData = { ...data, id: this.newsList.length + 1 };
+    this.newsList.push(newData);
+    return newData;
   }
 }
