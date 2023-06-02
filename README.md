@@ -43,3 +43,5 @@ jwt.strategy 撰写验证策略 通过 headers 中的 Token 与守卫进行 验�
 使用了 swagger 撰写文档
 useGlobalInterceptors 处理全局请求返回信息
 useGlobalPipes 处理入参校验
+
+##websocket 案例 使用 serve 工具打开 websocket-demo.html 查看
