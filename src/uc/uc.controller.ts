@@ -6,9 +6,15 @@ import { UcService } from './uc.service';
 @ApiTags('uc')
 export class UcController {
   constructor(private ucService: UcService) {}
-  @ApiOperation({ summary: '获取状态信息' })
+  @ApiOperation({ summary: '获取Ip地址' })
   @Get('getStatus')
   getStatus() {
-    return this.ucService.getStatus();
+    return this.ucService.getLocate();
+  }
+
+  @Post('getProfile')
+  @ApiOperation({ summary: '获取登录信息' })
+  getProfile() {
+    return this.ucService.getprofile();
   }
 }
