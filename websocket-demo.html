@@ -34,7 +34,7 @@
         sendMsg(text = '') {
           const sendData = {
             __timestamp__: +new Date(),
-            whisper: text,
+            event: text,
           };
           console.log(sendData, '发送了消息');
           this.ws.send(JSON.stringify(sendData));
