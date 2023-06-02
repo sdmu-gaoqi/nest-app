@@ -4,12 +4,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 import { WsAdapter } from './webscoket/ws.adapter';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.use(LoggerMiddleware);
   app.useWebSocketAdapter(new WsAdapter(app));
 
   const options = new DocumentBuilder()
