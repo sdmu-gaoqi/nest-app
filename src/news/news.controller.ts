@@ -2,21 +2,30 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
   Param,
   Post,
   Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { NewsService } from './news.service';
 import { AddNewDto } from './dto/addNew.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateNewDto } from './dto/updateNew.dto';
 import { NotDataException } from 'src/config/exception';
+import { HttpStatus } from 'src/config/interceptors';
 
 @Controller('news')
 @ApiTags('news')
+@ApiBearerAuth()
 export class NewsController {
   constructor(private newsServie: NewsService) {}
   @ApiOperation({ summary: '获取新闻列表' })
