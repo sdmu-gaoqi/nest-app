@@ -1,0 +1,127 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <bod>
+    <div id="app"></div>
+    <script type="text/babel">
+      class Ws {
+        constructor() {
+          this.ws = null;
+          this.connecting = false;
+          this.reconnectSettimeout = null; // 重新连接的setTimeout
+          this.timeout = 4000; // 心跳监测间隔
+          this.timeoutObj = null;
+          this.serverTimeoutObj = null;
+          this.createWebSocket();
+        }
+        createWebSocket() {
+          this.ws = new WebSocket('ws://localhost:3002/');
+          this.handlerMessage();
+        }
+        sendMsg(text = '') {
+          const sendData = {
+            __timestamp__: +new Date(),
+            whisper: text,
+          };
+          console.log(sendData, '发送了消息');
+          this.ws.send(JSON.stringify(sendData));
+        }
+        reconnect() {
+          console.log('正在重连服务器');
+          if (this.connecting) return;
+          this.connecting = true;
+          this.reconnectSettimeout && clearTimeout(this.reconnectSettimeout);
+          this.reconnectSettimeout = setTimeout(() => {
+            this.createWebSocket();
+            this.connecting = false;
+            this.sendMsg();
+          }, 4000);
+        }
+        startHeartcheck() {
+          this.timeoutObj && clearTimeout(this.timeoutObj);
+          this.timeoutObj = setTimeout(() => {
+            if (this.ws && this.ws.readyState === 1) {
+              this.ws.send(
+                JSON.stringify({ __timestamp__: new Date().getTime() }),
+              );
+              this.startHeartcheck();
+            }
+          }, this.timeout);
+        }
+        handlerMessage() {
+          this.ws.onopen = () => {
+            console.log('websocker已经打开');
+            this.startHeartcheck();
+          };
+          this.ws.onmessage = (e) => {
+            const data = {
+              __timestamp__: +new Date(),
+              data: e.data,
+            };
+            const dataParse = JSON.parse(e.data);
+            alert(dataParse.msg);
+          };
+          this.ws.onclose = (e) => {
+            console.log(`ws关闭了、关闭Code${e.code}、关闭原因${e.reason}`);
+          };
+          this.ws.onerror = (e) => {
+            console.log(`ws出现错误`);
+            this.reconnect();
+          };
+        }
+        close() {
+          this.ws.close();
+        }
+      }
+      const wsClient = new Ws();
+      let Dom = () => {
+        const ref = React.useRef(null);
+
+        const sendMsg = () => {
+          const value = ref.current.value;
+          if (!value) {
+            return alert('对我没话说了吗~说点爱我的话吧 比如夸我真帅');
+          }
+          wsClient.sendMsg(value);
+        };
+
+        return (
+          <div>
+            <div>hello react!</div>
+            <input
+              id="messageBox"
+              ref={ref}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  sendMsg();
+                }
+              }}
+            />
+            <button onClick={sendMsg}>给socket发消息</button>
+            <button
+              onClick={() => {
+                wsClient.close();
+              }}
+            >
+              关闭连接
+            </button>
+          </div>
+        );
+      };
+      ReactDOM.render(<Dom />, document.querySelector('#app'));
+    </script>
+  </bod>
+</html>
