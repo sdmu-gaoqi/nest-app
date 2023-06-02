@@ -5,14 +5,19 @@ import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 import { WsAdapter } from './webscoket/ws.adapter';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { MyLogger } from './utils/log4js';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+    bufferLogs: true,
+  });
+  // app.useLogger(app.get(MyLogger));
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
-  app.use(LoggerMiddleware);
   app.useWebSocketAdapter(new WsAdapter(app));
+  app.useLogger(new MyLogger());
 
   const options = new DocumentBuilder()
     .setTitle('nest-app Api')
