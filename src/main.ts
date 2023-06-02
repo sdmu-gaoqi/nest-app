@@ -16,6 +16,7 @@ async function bootstrap() {
     .setVersion('1.0.0-alpha')
     .addTag('auth', '用户模块')
     .addTag('news', '信息模块')
+    .addTag('uc', '账号中心')
     .addBearerAuth()
     .build();
 
