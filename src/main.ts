@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { HttpException, Logger, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 import { WsAdapter } from './webscoket/ws.adapter';
-import { LoggerMiddleware } from './middleware/logger.middleware';
-import { MyLogger } from './utils/log4js';
+import { logger } from './middleware/logger.middleware';
+import * as express from 'express';
+import { ErrorExceptionFilter } from './filter/error-exception/error-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -17,8 +18,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useWebSocketAdapter(new WsAdapter(app));
-  app.useLogger(new MyLogger());
-
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.useGlobalFilters(new ErrorExceptionFilter());
+  app.use(logger);
   const options = new DocumentBuilder()
     .setTitle('nest-app Api')
     .setDescription('初次尝试搭建的nest仓库')

@@ -14,7 +14,6 @@ export class WsAdapter implements WebSocketAdapter {
   }
 
   bindClientConnect(server, callback: any) {
-    console.log('ws bindClientConnect, server:\n', server);
     server.on('connection', callback);
   }
 
