@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserDto } from 'src/user/dto/user.dto';
+import { UserDto } from 'src/module/user/dto/user.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
