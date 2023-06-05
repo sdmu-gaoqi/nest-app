@@ -22,6 +22,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateNewDto } from './dto/updateNew.dto';
 import { NotDataException } from 'src/config/exception';
 import { HttpStatus } from 'src/config/interceptors';
+import RbacGuard from 'src/guaid/rbac.guard';
 
 @Controller('news')
 @ApiTags('news')
@@ -49,6 +50,7 @@ export class NewsController {
   }
 
   @Post('add')
+  @UseGuards(new RbacGuard())
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '添加新闻' })
   @ApiBody({ type: AddNewDto })
