@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Double, Entity, Long, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class News {
@@ -16,4 +10,9 @@ export class News {
 
   @Column()
   content: string;
+
+  @Column({
+    type: 'bigint',
+  })
+  createTime: number;
 }

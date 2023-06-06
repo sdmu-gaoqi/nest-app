@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { NewsService } from './news.service';
@@ -23,16 +25,38 @@ import { UpdateNewDto } from './dto/updateNew.dto';
 import { NotDataException } from 'src/config/exception';
 import { HttpStatus } from 'src/config/interceptors';
 import RbacGuard from 'src/guaid/rbac.guard';
+import { MyLogger } from 'src/utils/log4js';
+import {
+  ListParamsDecorator,
+  PageResult,
+} from 'src/decorator/listParams.decorator';
 
 @Controller('news')
 @ApiTags('news')
 @ApiBearerAuth()
 export class NewsController {
   constructor(private newsServie: NewsService) {}
-  @ApiOperation({ summary: '获取新闻列表' })
+
   @Get('list')
-  getList() {
-    return this.newsServie.getNews();
+  @ApiOperation({ summary: '获取新闻列表' })
+  @ApiQuery({ name: 'page', example: '1', description: '页码' })
+  @ApiQuery({ name: 'pageSize', example: '10', description: '码数' })
+  @ApiQuery({
+    name: 'orderBy',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'orderValue',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'time',
+    required: false,
+    description: '以天为单位的时间戳',
+    example: 1686042920015,
+  })
+  getList(@ListParamsDecorator() params: PageResult) {
+    return this.newsServie.getNews(params.pageParams);
   }
 
   @Get(':id')
