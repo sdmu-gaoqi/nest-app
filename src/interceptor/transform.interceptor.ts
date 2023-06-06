@@ -30,7 +30,6 @@ export class TransformInterceptor<T>
         User: ${JSON.stringify(req.user)}
         Response data:\n ${JSON.stringify(req.data)}
         <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`;
-        MyLogger.log(logFormat);
         MyLogger.access(logFormat);
         return {
           data,

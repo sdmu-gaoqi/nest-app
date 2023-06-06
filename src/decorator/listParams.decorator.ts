@@ -47,6 +47,8 @@ export const ListParamsDecorator = createParamDecorator(
     const pageParams = {
       skip: Number((page - 1) * pageSize),
       take: Number(pageSize),
+      page: page,
+      pageSize: pageSize,
       ...(!isEmpty(where) && {
         where: where,
       }),

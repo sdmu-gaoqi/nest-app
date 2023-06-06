@@ -2,11 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpException, Logger, ValidationPipe } from '@nestjs/common';
-import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 import { WsAdapter } from './webscoket/ws.adapter';
 import { logger } from './middleware/logger.middleware';
 import * as express from 'express';
 import { ErrorExceptionFilter } from './filter/error-exception/error-exception.filter';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

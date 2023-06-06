@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -30,6 +31,7 @@ import {
   ListParamsDecorator,
   PageResult,
 } from 'src/decorator/listParams.decorator';
+import { ListPageInterceptor } from 'src/interceptor/listPage.interceptor';
 
 @Controller('news')
 @ApiTags('news')
@@ -56,6 +58,7 @@ export class NewsController {
     description: '以天为单位的时间戳',
     example: 1686042920015,
   })
+  @UseInterceptors(new ListPageInterceptor())
   getList(@ListParamsDecorator() params: PageResult) {
     return this.newsServie.getNews(params.pageParams);
   }

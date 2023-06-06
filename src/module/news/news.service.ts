@@ -1,8 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpStatus } from 'src/config/interceptors';
 import { News } from 'src/feature/news';
-import { MyLogger } from 'src/utils/log4js';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,7 +10,15 @@ export class NewsService {
     private readonly goodRepository: Repository<News>,
   ) {}
   getNews(params) {
-    return this.goodRepository.find(params);
+    return this.goodRepository.findAndCount(params);
+    // .then((res) => {
+    //   return {
+    //     list: res[0],
+    //     total: res[1],
+    //     page: params.page,
+    //     pageSize: params.pageSize,
+    //   };
+    // });
   }
   addNew(data) {
     return this.goodRepository.save({ ...data, createTime: +new Date() });
