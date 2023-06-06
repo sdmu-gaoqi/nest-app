@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { map } from 'rxjs';
 
 @Injectable()
-export class UcService {
+export class CommonService {
   constructor(private Http: HttpService) {}
   getLocate() {
     return this.Http.get('https://url', {

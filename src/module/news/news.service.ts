@@ -11,14 +11,6 @@ export class NewsService {
   ) {}
   getNews(params) {
     return this.goodRepository.findAndCount(params);
-    // .then((res) => {
-    //   return {
-    //     list: res[0],
-    //     total: res[1],
-    //     page: params.page,
-    //     pageSize: params.pageSize,
-    //   };
-    // });
   }
   addNew(data) {
     return this.goodRepository.save({ ...data, createTime: +new Date() });
