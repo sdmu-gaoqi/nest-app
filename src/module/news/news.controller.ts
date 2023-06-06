@@ -48,6 +48,7 @@ export class NewsController {
   @ApiQuery({
     name: 'orderValue',
     required: false,
+    description: 'DESC | ASC',
   })
   @ApiQuery({
     name: 'time',
