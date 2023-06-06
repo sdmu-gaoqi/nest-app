@@ -50,8 +50,8 @@ export class NewsController {
   }
 
   @Post('add')
-  @UseGuards(new RbacGuard())
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(new RbacGuard())
+  // @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '添加新闻' })
   @ApiBody({ type: AddNewDto })
   addNew(@Body() body: AddNewDto) {

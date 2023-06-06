@@ -17,12 +17,14 @@ const productConfig = {
 
 const localConfig = {
   mysql: {
-    port: '数据库端口',
-    host: '数据库地址',
-    user: '用户名',
-    password: '密码',
-    database: 'nest_zero_to_one', // 库名
-    connectionLimit: 10, // 连接限制
+    port: 3306,
+    host: '127.0.0.1',
+    username: 'root',
+    password: '1996gq..',
+    database: 'test', // 库名
+    type: 'mysql',
+    autoLoadEntities: true,
+    synchronize: true,
   },
   redis: {
     port: 6379,
