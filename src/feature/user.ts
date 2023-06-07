@@ -1,6 +1,14 @@
-import { Column, Double, Entity, Long, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Double,
+  Entity,
+  Long,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity()
+@Unique(['username'])
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,9 +24,13 @@ export class Users {
 
   @Column({
     type: 'bigint',
+    default: -1,
   })
   last_login: number;
 
-  @Column()
+  @Column({
+    type: 'bigint',
+    default: 0,
+  })
   login_count: number;
 }

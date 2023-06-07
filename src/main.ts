@@ -26,9 +26,10 @@ async function bootstrap() {
     .setTitle('nest-app Api')
     .setDescription('初次尝试搭建的nest仓库')
     .setVersion('1.0.0-alpha')
-    .addTag('auth', '用户模块')
+    .addTag('auth', '鉴权模块')
     .addTag('news', '信息模块')
     .addTag('common', '转发')
+    .addTag('users', '用户模块')
     .addBearerAuth()
     .build();
 

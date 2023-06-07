@@ -33,8 +33,8 @@ export class TransformInterceptor<T>
         MyLogger.access(logFormat);
         return {
           data,
-          statusCode: 'code' in data ? data.code : 0,
-          success: !data.code,
+          statusCode: 'code' in data ? data?.code : 0,
+          success: !data?.code,
           message: data?.message || 'success',
         };
       }),

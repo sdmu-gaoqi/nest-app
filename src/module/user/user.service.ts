@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/feature/user';
-import { Repository } from 'typeorm';
+import { MyLogger } from 'src/utils/log4js';
+import { FindOneOptions, Repository } from 'typeorm';
 
 export type User = {
   id: number;
@@ -13,16 +14,15 @@ export type User = {
 export class UserService {
   constructor(
     @InjectRepository(Users)
-    private readonly goodRepository: Repository<Users>,
+    private readonly userRepository: Repository<Users>,
   ) {}
-  private users: User[] = [
-    { id: 1, username: '张三', password: 'abc123' },
-    { id: 2, username: '李四', password: 'abc123' },
-    { id: 3, username: '王五', password: 'abc123' },
-    { id: 3, username: '赵六', password: 'abc123' },
-  ];
 
   async findOneByUsername(username: string): Promise<User | undefined> {
-    return this.users.find((item) => item.username === username);
+    const user = await this.userRepository.findOneBy({ username });
+    return user;
+  }
+
+  async register(data) {
+    return this.userRepository.save(data);
   }
 }

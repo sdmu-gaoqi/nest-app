@@ -2,12 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { RedisInstance } from 'src/database/redis';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Users } from 'src/feature/user';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
+    @InjectRepository(Users)
+    private readonly userRepository: Repository<Users>,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -28,6 +33,8 @@ export class AuthService {
     const redis = await RedisInstance.initRedis('auth.certificate', 0);
     // 将用户信息和 token 存入 redis，并设置失效时间，语法：[key, seconds, value]
     await redis.setex(`${user.id}-${user.username}`, 300, `${token}`);
+    this.userRepository.increment({ id: user.id }, 'login_count', 1);
+    this.userRepository.update({ id: user.id }, { last_login: +new Date() });
     return {
       access_token: token,
       username: user.username,
