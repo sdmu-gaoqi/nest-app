@@ -17,7 +17,19 @@ export class NewsService {
   }
 
   getNewDetail(id) {
-    return this.goodRepository.findOneBy({ id });
+    // one
+    // return this.goodRepository.findOneBy({ id });
+
+    // two
+    const Sql = this.goodRepository
+      .createQueryBuilder()
+      .where('id = :id', { id })
+      .getSql();
+    const result = this.goodRepository
+      .createQueryBuilder()
+      .where('id = :id', { id })
+      .getOne();
+    return result;
   }
 
   updateNew(id, content) {

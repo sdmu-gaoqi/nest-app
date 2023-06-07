@@ -23,6 +23,16 @@ export class UserService {
   }
 
   async register(data) {
-    return this.userRepository.save(data);
+    // one
+    // return this.userRepository.save(data);
+
+    // two
+    const user = this.userRepository.create(data);
+    return this.userRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Users)
+      .values(user)
+      .execute();
   }
 }
