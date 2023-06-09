@@ -20,7 +20,7 @@ const localConfig = {
     port: 3306,
     host: '127.0.0.1',
     username: 'root',
-    password: 'root..',
+    password: 'root',
     database: 'test', // 库名
     type: 'mysql',
     autoLoadEntities: true,
